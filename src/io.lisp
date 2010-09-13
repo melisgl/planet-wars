@@ -9,6 +9,13 @@
                  :n-ships (parse-number:parse-number (elt tokens 4))
                  :growth (parse-number:parse-number (elt tokens 5)))))
 
+(defun read-planet (stream)
+  (parse-planet (read-line stream)))
+
+(defun write-planet (planet stream)
+  (format stream "P ~F ~F ~D ~D ~D~%" (x planet) (y planet)
+          (owner planet) (n-ships planet) (growth planet)))
+
 (defun parse-fleet (line)
   (let ((tokens (split-sequence:split-sequence #\space line)))
     (assert (string= "F" (elt tokens 0)))
@@ -19,15 +26,8 @@
                 :n-total-turns (parse-number:parse-number (elt tokens 5))
                 :n-remaining-turns (parse-number:parse-number (elt tokens 6)))))
 
-(defun read-planet (stream)
-  (parse-planet (read-line stream)))
-
 (defun read-fleet (stream)
   (parse-fleet (read-line stream)))
-
-(defun write-planet (planet stream)
-  (format stream "P ~F ~F ~D ~D ~D~%" (x planet) (y planet)
-          (owner planet) (n-ships planet) (growth planet)))
 
 (defun write-fleet (fleet stream)
   (format stream "F ~D ~D ~D ~D ~D ~D~%" (owner fleet) (n-ships fleet)
@@ -55,3 +55,13 @@
   (map nil (lambda (fleet)
              (write-fleet fleet stream))
        (fleets game)))
+
+(defun write-order (order stream)
+  (format stream "~D ~D ~D~%" (order-source order)
+          (order-destination order)
+          (order-n-ships order)))
+
+(defun write-orders (orders stream)
+  (map nil (lambda (order)
+             (write-order order stream))
+       orders))

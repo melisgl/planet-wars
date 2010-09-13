@@ -8,6 +8,9 @@
   :components ((:module "src"
                 :serial t
                 :components ((:file "package")
+                             (:file "model")
+                             (:file "io")
+                             (:file "play")
                              (:file "engine"))))
   :depends-on (#:parse-number #:split-sequence)
   :serial t)

@@ -22,3 +22,8 @@
 (defstruct (game (:conc-name ""))
   planets
   fleets)
+
+(defstruct order
+  source
+  destination
+  n-ships)
