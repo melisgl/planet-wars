@@ -16,4 +16,5 @@
 
 (compile-and-load (list *default-pathname-defaults*
                         *features*
+                        sb-impl::*default-external-format*
                         (directory "**")))
