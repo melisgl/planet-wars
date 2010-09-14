@@ -1,6 +1,7 @@
 SUBMISSION=bocsimacko.zip
 DIST=bocsimacko-dist.zip
-BIN=my-bot
+# Don't change this, the server will try to run this binary.
+BIN=MyBot
 
 $BIN: src/*.lisp
 	sh run-this.sh --eval \
