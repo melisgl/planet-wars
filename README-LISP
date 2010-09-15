@@ -11,14 +11,16 @@ explains how to run to example bots against each other. The CL starter
 package contains the same tools and example bots, so you can use the
 same invocation to run an example:
 
-    java -jar tools/PlayGame.jar maps/map7.txt 1000 1000 log.txt "java -jar example_bots/RandomBot.jar" "java -jar example_bots/DualBot.jar" | java -jar tools/ShowGame.jar
+:  java -jar tools/PlayGame.jar maps/map7.txt 1000 1000 log.txt "java -jar example_bots/RandomBot.jar" "java -jar example_bots/DualBot.jar" | java -jar tools/ShowGame.jar
 
-*Note*: Java needs to be installed on your system!
+Note that Java needs to be installed on your system!
 
-The invocation to run the CL bot is almost the same as the above but
-replaces the first bot with a call to SBCL and MyBot.lisp.
+To compile the bot run =make= that should =REQUIRE= the planet-wars
+system and save the image as an executable name =MyBot=. The
+invocation to run the CL bot is almost the same as the above but
+replaces the first bot with a call to =MyBot=:
 
-    java -jar tools/PlayGame.jar maps/map7.txt 1000 1000 log.txt "sbcl --noinform --disable-ldb --lose-on-corruption --end-runtime-options --no-sysinit --disable-debugger --load MyBot.lisp --userinit sbclrc" "java -jar example_bots/DualBot.jar" | java -jar tools/ShowGame.jar
+:  java -jar tools/PlayGame.jar maps/map7.txt 1000 1000 log.txt "./MyBot" "java -jar example_bots/DualBot.jar" | java -jar tools/ShowGame.jar
 
 Check the shell scripts in the `bin` directory for more examples on
 how to run this bot.
@@ -33,7 +35,6 @@ compile them.
 *Note*: This is not a problem when submitting your code to the server
 since it will be compiled first there.
 
-
 ** Submitting the bot
 
 The `bin/make-dist.sh' script creates a zip file that can be used to
@@ -44,8 +45,7 @@ sure to test a compiled version of your bot before submitting.
 At the time of this writing I do not know whether SBCL will be run
 with a custom dynamic space size so that option is not set yet.
 
-*to do: automatically submit the zip file to the server with `curl`*
-
+*** TODO automatically submit the zip file to the server with `curl`
 
 ** ProxyBot
 
@@ -64,37 +64,17 @@ debugger and can inspect the situation.
 However, there's a slight speed penalty because of the extra code and
 communications.
 
-When running from Slime it is assumed you want to run the proxy bot so
-`:pwbot-slime` is set in `*features*`. **Make sure not to use `sbclrc`
-from the starter package directory as userinit file! Otherwise
-`:pwbot-local` will be set as well and those two interfere.**
+In SBCL 
+
+ =(pw:start-server-for-proxy-bot :one-shot t)=
 
 *** Running the ProxyBot
 
 *(this section assumes Slime defaults)*
 
-The proxy bot needs to be compiled, otherwise it'll time out at the
-start.  The `bin/compile-proxy-bot.sh` script takes care of this.
+First, compile the proxy bot with =make ProxyBot= then assuming there
+is a real bot to connect to, it is as easy to use as running:
 
-Start up SBCL with `sbcl --load MyBot.lisp`.  I'm assuming you start
-up Swank from your userinit file, if not:
+  java -jar tools/PlayGame.jar maps/map7.txt 1000 1000 /dev/null "./ProxyBot" "java -jar example_bots/DualBot.jar" | java -jar tools/ShowGame.jar
 
-    CL-USER(1): (asdf:oos 'asdf:load-op :swank)
-    CL-USER(2): (swank:create-server)
-
-In Emacs do `M-x slime-connect`, go to the Slime REPL, type
-`(pwbot::main)` and it should say "Waiting for connection...".  If
-not, you've got a problem.
-
-Back on the command line type:
-
-    bin/play-proxy-game.sh maps/map7.txt example_bots/DualBot.jar
-
-and it should run a game.
-
-*** Necessary improvements
-
-* You have to get `(pwbot::main)` (or `(main)` if you're in the PWBOT
-  package) from the history every time you want to run a game.  This
-  is both annoying and one can't run a whole batch of games from a
-  script this way.
+If that fails (proxy bot times out) check =proxy-bot.log=.

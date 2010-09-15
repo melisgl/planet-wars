@@ -1,20 +1,13 @@
 ;;;; This file must be here because the contest server compile
-;;;; environment relies on it.
+;;;; environment relies on it to recognize that it is a Common Lisp
+;;;; submission.
 ;;;;
-;;;; ASDF on the server gets into infinite recursion so load stuff
-;;;; manually.
+;;;; This file can also be loaded to test a bot without compiling and
+;;;; saving an image or using proxy bot.
 
-(defparameter *interesting-debug-info* nil)
+;;; Load the sytem, but make sure nothing is written to the orignal
+;;; stdout as that's read by the engine.
+(let ((*standard-output* *error-output*))
+  (require :planet-wars))
 
-(eval-when (:compile-toplevel :load-toplevel :execute)
-  (defun compile-and-load (interesting-debug-info)
-    (declare (optimize debug))
-    (setq *interesting-debug-info* interesting-debug-info)
-    (dolist (name '("parse-number" "split-sequence"
-                    "package" "model" "io" "player" "play"))
-      (load (compile-file (format nil "src/~A.lisp" name))))))
-
-(compile-and-load (list *default-pathname-defaults*
-                        *features*
-                        sb-impl::*default-external-format*
-                        (directory "**")))
+(planet-wars:play)
