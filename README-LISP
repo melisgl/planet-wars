@@ -1,5 +1,5 @@
 # -*- mode: org -*-
-Common Lisp Starter Package for Planet Wars
+Common Lisp Starter Package v0.1 for Planet Wars
 
 This file contains specific information about the Common Lisp (CL)
 starter package for the [[http://ai-contest.com/][Planet Wars Google AI Challenge]].
@@ -64,8 +64,11 @@ Makefile not unlike the one that came with this package, so be sure to
 test a compiled version of your bot before submitting.
 
 At the time of this writing the memory available in the sandbox for
-bots is not specified, =run-sbcl.sh= (and the compiled images) default
-to 768M for the heap.
+bots is not specified, =run-sbcl.sh= defaults to 768M for the heap.
+*** TODO fix heap limit in executables
+The SAVE-RUNTIME-OPTIONS parameter to SAVE-LISP-AND-DIE is only
+available since SBCL 1.0.31 so the executables have no such limit.
+Revisit this when the exact SBCL version on the server is known.
 *** TODO automatically submit the zip file to the server with `curl`
 ** ProxyBot
 
