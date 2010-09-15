@@ -1,6 +1,6 @@
 (in-package :pw-util)
 
-(defparameter *verbose* t
+(defparameter *verbose* nil
   "Debugging Switch. Set this to T if you want debugging output
 written to sbcl.log and for the LOGMSG function to actually do
 something. LOGMSG always appends lines to the log so you can just keep
@@ -20,4 +20,3 @@ a 'tail -f sbcl.log' running. Set to NIL when submitting!")
       (decode-universal-time (get-universal-time))
     (format nil "~D-~2,'0D-~2,'0D ~2,'0D:~2,'0D:~2,'0D"
             yea mon day hou min sec)))
-

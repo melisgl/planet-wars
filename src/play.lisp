@@ -23,11 +23,7 @@
                                (let ((orders (compute-orders player)))
                                  (pw-util:logmsg "*** orders~%~S~%" orders)
                                  (write-orders orders output))
-                               (write-line "go" output))))))
-    ;; Sometimes necessary because output streams can be closed and
-    ;; UNIX-EXIT runs into an error.
-    #+nil
-    (sb-ext:quit :recklessly-p t)))
+                               (write-line "go" output))))))))
 
 (defun start-server-for-proxy-bot (&key (player (make-instance 'dummy-player))
                                    one-shot)

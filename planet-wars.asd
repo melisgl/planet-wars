@@ -11,9 +11,7 @@
                              (:file "model")
                              (:file "io")
                              (:file "player")
-                             (:file "play")
-                             #+nil
-                             (:file "engine"))))
+                             (:file "play"))))
   :depends-on (#:parse-number #:split-sequence #:sb-bsd-sockets
                               #:planet-wars-util)
   :serial t)

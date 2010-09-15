@@ -1,7 +1,5 @@
 (in-package :planet-wars)
 
-
-
 ;;;; IO
 
 (defun test-parse-planet ()
