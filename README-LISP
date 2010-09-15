@@ -41,6 +41,21 @@ call to =MyBot=:
       "./MyBot" \
       "java -jar example_bots/DualBot.jar" | java -jar tools/ShowGame.jar
 
+** Slime
+
+To run SBCL as it will be on the server (with the maximum heap size
+set and with ASDF:*CENTRAL-REGISTRY* initialized) do =C-u M-x slime=
+in emacs and enter =sh /path/to/starter-kit/bin/run-sbcl.sh= at the
+=Run lisp:= prompt.
+
+Or with an recent SBCL with ASDF v2, you may simply do:
+
+  (asdf:initialize-source-registry '(:source-registry
+                                     (:tree "/path/to/starter-kit/")
+                                      :ignore-inherited-configuration))
+
+Before =(REQUIRE :PLANET-WARS)=.
+
 ** Submitting the bot
 
 =make submission= creates a zip file that can be used to submit a bot
@@ -51,9 +66,7 @@ test a compiled version of your bot before submitting.
 At the time of this writing the memory available in the sandbox for
 bots is not specified, =run-sbcl.sh= (and the compiled images) default
 to 768M for the heap.
-
 *** TODO automatically submit the zip file to the server with `curl`
-
 ** ProxyBot
 
 To make working on your bot a little more natural / lispy I've
