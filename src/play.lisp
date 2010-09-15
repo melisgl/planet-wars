@@ -29,16 +29,24 @@
     #+nil
     (sb-ext:quit :recklessly-p t)))
 
-(defun start-server-for-proxy-bot (&key (player (make-instance 'dummy-player)))
-  (let ((socket (make-instance 'inet-socket :type :stream :protocol :tcp))
-        client
-        stream)
-    (socket-bind socket #(127 0 0 1) 41807)
-    (socket-listen socket 0)
-    (pw-util:logmsg "Waiting for connection...~%")
-    (setf client (socket-accept socket)
-          stream (socket-make-stream client :input t
-                                     :output t :element-type 'character
-                                     :buffering :line))
-    (pw-util:logmsg "Got connection...~%")
-    (play :player player :input stream :output stream)))
+(defun start-server-for-proxy-bot (&key (player (make-instance 'dummy-player))
+                                   one-shot)
+  (let ((socket (make-instance 'inet-socket :type :stream :protocol :tcp)))
+    (unwind-protect
+         (progn
+           (setf (sockopt-reuse-address socket) t)
+           (socket-bind socket #(127 0 0 1) 41807)
+           (socket-listen socket 0)
+           (loop do
+                 (pw-util:logmsg "Waiting for connection...~%")
+                 (let* ((client (socket-accept socket))
+                        (stream (socket-make-stream client :input t
+                                                    :output t
+                                                    :element-type 'character
+                                                    :buffering :line)))
+                   (pw-util:logmsg "Got connection...~%")
+                   (unwind-protect
+                        (play :player player :input stream :output stream)
+                     (socket-close client)))
+                 until one-shot))
+      (socket-close socket))))
