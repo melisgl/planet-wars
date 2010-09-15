@@ -41,8 +41,11 @@
                                                     :element-type 'character
                                                     :buffering :line)))
                    (pw-util:logmsg "Got connection...~%")
-                   (unwind-protect
-                        (play :player player :input stream :output stream)
-                     (socket-close client)))
+                   (#+sb-thread sb-thread:make-thread #-sb-thread funcall
+                                (lambda ()
+                                  (unwind-protect
+                                       (play :player player
+                                             :input stream :output stream)
+                                    (socket-close client)))))
                  until one-shot))
       (socket-close socket))))
