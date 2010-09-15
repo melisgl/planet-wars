@@ -50,7 +50,7 @@ test a compiled version of your bot before submitting.
 
 At the time of this writing the memory available in the sandbox for
 bots is not specified, =run-sbcl.sh= (and the compiled images) default
-to 768M for the heap.
+to 896M for the heap.
 
 *** TODO automatically submit the zip file to the server with `curl`
 
