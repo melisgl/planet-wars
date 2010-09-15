@@ -9,6 +9,7 @@
                 :serial t
                 :components ((:module "proxy-bot"
                               :components ((:file "package")
-                                           (:file "proxy-bot"))))))
+                                           (:file "proxy-bot"))
+                              :serial t))))
   :depends-on (#:planet-wars-util #:sb-bsd-sockets)
   :serial t)

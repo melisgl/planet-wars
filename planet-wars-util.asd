@@ -10,5 +10,6 @@
                 :serial t
                 :components ((:module "util"
                               :components ((:file "package")
-                                           (:file "util"))))))
+                                           (:file "util"))
+                              :serial t))))
   :serial t)

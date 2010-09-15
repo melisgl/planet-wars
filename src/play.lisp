@@ -1,7 +1,6 @@
 (in-package :planet-wars)
 
-(defun main (&key
-             (player (make-instance 'dummy-player))
+(defun play (&key (player (make-instance 'dummy-player))
              (input *standard-input*) (output *standard-output*))
   (pw-util:logmsg "~&~%* New game started at ~A~%"
                   (pw-util:current-date-time-string))
@@ -27,4 +26,19 @@
                                (write-line "go" output))))))
     ;; Sometimes necessary because output streams can be closed and
     ;; UNIX-EXIT runs into an error.
+    #+nil
     (sb-ext:quit :recklessly-p t)))
+
+(defun start-server-for-proxy-bot (&key (player (make-instance 'dummy-player)))
+  (let ((socket (make-instance 'inet-socket :type :stream :protocol :tcp))
+        client
+        stream)
+    (socket-bind socket #(127 0 0 1) 41807)
+    (socket-listen socket 0)
+    (pw-util:logmsg "Waiting for connection...~%")
+    (setf client (socket-accept socket)
+          stream (socket-make-stream client :input t
+                                     :output t :element-type 'character
+                                     :buffering :line))
+    (pw-util:logmsg "Got connection...~%")
+    (play :player player :input stream :output stream)))

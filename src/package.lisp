@@ -1,3 +1,5 @@
 (defpackage :planet-wars
-  (:use :cl)
-  (:export #:main))
+  (:nicknames :pw)
+  (:use :cl :sb-bsd-sockets)
+  (:export #:play
+           #:start-server-for-proxy-bot))

@@ -6,7 +6,7 @@ BIN=MyBot
 
 $BIN:   src/*.lisp
 	sh bin/run-sbcl.sh --eval "(require :planet-wars)" \
-	        --eval "(save-lisp-and-die \"$(BIN)\" :executable t :toplevel #'planet-wars:main)"
+	        --eval "(save-lisp-and-die \"$(BIN)\" :executable t :toplevel #'planet-wars:play)"
 
 $(PROXYBIN): src/proxy-bot/*.lisp
 	sh bin/run-sbcl.sh --eval "(require :proxy-bot)" \
