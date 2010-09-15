@@ -10,7 +10,9 @@
                 :components ((:file "package")
                              (:file "model")
                              (:file "io")
+                             (:file "player")
                              (:file "play")
+                             #+nil
                              (:file "engine"))))
   :depends-on (#:parse-number #:split-sequence)
   :serial t)

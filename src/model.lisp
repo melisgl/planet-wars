@@ -9,6 +9,7 @@
   n-ships)
 
 (defstruct (planet (:include %ships) (:conc-name ""))
+  id
   x
   y
   growth)
@@ -27,3 +28,8 @@
   source
   destination
   n-ships)
+
+(defun planet-id (obj)
+  (if (planet-p obj)
+      (id obj)
+      obj))

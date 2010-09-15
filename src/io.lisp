@@ -36,13 +36,17 @@
 
 (defun read-game (stream)
   (let ((planets ())
-        (fleets ()))
+        (fleets ())
+        (next-planet-id 0))
     (loop for line = (read-line stream nil nil)
-          while line
+          while (and line (not (string= "go" line)))
           do
           (when (plusp (length line))
             (cond ((char= #\P (aref line 0))
-                   (push (parse-planet line) planets))
+                   (let ((planet (parse-planet line)))
+                     (setf (id planet) next-planet-id)
+                     (incf next-planet-id)
+                     (push planet planets)))
                   ((char= #\F (aref line 0))
                    (push (parse-fleet line) fleets)))))
     (make-game :planets (coerce (nreverse planets) 'vector)
@@ -57,8 +61,8 @@
        (fleets game)))
 
 (defun write-order (order stream)
-  (format stream "~D ~D ~D~%" (order-source order)
-          (order-destination order)
+  (format stream "~D ~D ~D~%" (planet-id (order-source order))
+          (planet-id (order-destination order))
           (order-n-ships order)))
 
 (defun write-orders (orders stream)
