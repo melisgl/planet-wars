@@ -11,29 +11,31 @@ explains how to run to example bots against each other. The CL starter
 package contains the same tools and example bots, so you can use the
 same invocation to run an example:
 
-:  java -jar tools/PlayGame.jar maps/map7.txt 1000 1000 log.txt "java -jar example_bots/RandomBot.jar" "java -jar example_bots/DualBot.jar" | java -jar tools/ShowGame.jar
+  java -jar tools/PlayGame.jar maps/map7.txt 1000 1000 game.log \
+      "java -jar example_bots/RandomBot.jar" \
+      "java -jar example_bots/DualBot.jar" | java -jar tools/ShowGame.jar
 
 Note that Java needs to be installed on your system!
 
-To compile the bot run =make= that should =REQUIRE= the planet-wars
-system and save the image as an executable name =MyBot=. The
-invocation to run the CL bot is almost the same as the above but
-replaces the first bot with a call to =MyBot=:
+The version of the tools is ...
 
-:  java -jar tools/PlayGame.jar maps/map7.txt 1000 1000 log.txt "./MyBot" "java -jar example_bots/DualBot.jar" | java -jar tools/ShowGame.jar
+The script =bin/run-bot.sh= load the planet-wars asdf system and calls
+the function PW:PLAY. It can be passed as a player:
 
-Check the shell scripts in the `bin` directory for more examples on
-how to run this bot.
+  java -jar tools/PlayGame.jar maps/map7.txt 1000 1000 game.log \
+      "./bin/run-bot.sh" \
+      "java -jar example_bots/DualBot.jar" | java -jar tools/ShowGame.jar
 
-** Bot timing out locally
+It may take a while to compile and may even time out. In this case
+just retry (no need for compilation the second time) or compile the
+bot run =make= that should load the planet-wars system and save the
+image as an executable name =MyBot=. The invocation to run the CL bot
+is almost the same as the above but replaces the first bot with a call
+to =MyBot=:
 
-You will almost certainly need to compile `parse-number.lisp` and
-`split-sequence.lisp`, otherwise SBCL will take too long to start up
-and your bot will time out. The `bin/compile-libs.sh` script will
-compile them.
-
-*Note*: This is not a problem when submitting your code to the server
-since it will be compiled first there.
+  java -jar tools/PlayGame.jar maps/map7.txt 1000 1000 game.log \
+      "./MyBot" \
+      "java -jar example_bots/DualBot.jar" | java -jar tools/ShowGame.jar
 
 ** Submitting the bot
 

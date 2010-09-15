@@ -1,8 +1,7 @@
-SUBMISSION=bocsimacko.zip
-DIST=bocsimacko-dist.zip
 PROXYBIN=ProxyBot
 # Don't change this, the server will try to run this binary.
 BIN=MyBot
+DIRNAME=`basename $$PWD`
 
 $BIN:   src/*.lisp .asdf-dirs
 	sh bin/run-sbcl.sh --eval "(require :planet-wars)" \
@@ -28,5 +27,4 @@ dist:
 	git archive --format=zip --prefix "bocsimacko/" HEAD > $(DIST)
 
 submission:
-	git archive --format=zip --prefix "bocsimacko/" HEAD \
-		src/*.lisp MyBot.lisp > $(SUBMISSION)
+	./bin/make-submission.sh "$(DIRNAME)"
