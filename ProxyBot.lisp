@@ -7,4 +7,4 @@
   (load (merge-pathnames "setup.lisp" *load-truename*))
   (require :proxy-bot))
 
-(proxy-bot:proxy)
+(pw-proxy-bot:proxy)
