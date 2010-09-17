@@ -1,6 +1,4 @@
 PROXYBIN=ProxyBot
-# Don't change this, the server will try to run this binary.
-BIN=MyBot
 DIRNAME=`basename $$PWD`
 STARTER_PACKAGE="common-lisp-starter-package-v0.4"
 
