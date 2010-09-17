@@ -2,12 +2,10 @@ PROXYBIN=ProxyBot
 # Don't change this, the server will try to run this binary.
 BIN=MyBot
 DIRNAME=`basename $$PWD`
-STARTER_PACKAGE_ZIP="common-lisp-starter-package-v0.3.zip"
+STARTER_PACKAGE_ZIP="common-lisp-starter-package-v0.4.zip"
 
 $BIN:   src/*.lisp
-	sh bin/run-sbcl.sh --load setup.lisp \
-		--eval "(require :planet-wars)" \
-	        --eval "(save-lisp-and-die \"$(BIN)\" :executable t :toplevel #'planet-wars:play)"
+	bin/compile-bot.sh
 
 $(PROXYBIN): src/proxy-bot/*.lisp
 	sh bin/run-sbcl.sh --load setup.lisp \
@@ -21,7 +19,7 @@ distclean: clean
 	rm -f "$(BIN)" "$(PROXYBIN)" "$(STARTER_PACKAGE_ZIP)"
 
 starter-package:
-	git archive --format=zip --prefix "common-lisp-starter-package-v0.3/" HEAD > \
+	git archive --format=zip --prefix "common-lisp-starter-package-v0.4/" HEAD > \
 		"$(STARTER_PACKAGE_ZIP)"
 
 submission:
