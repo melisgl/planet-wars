@@ -54,7 +54,14 @@
         (push fleet (incoming (aref planets (destination fleet)))))
       (loop for planet across planets do
             (setf (incoming planet)
-                  (sort (incoming planet) #'< :key #'n-remaining-turns)))
+                  (sort (coerce (incoming planet) 'vector)
+                        #'< :key #'n-remaining-turns))
+            (setf (neighbours planet)
+                  (sort (map 'vector (lambda (neighbour)
+                                       (cons (turns-to-travel planet neighbour)
+                                             neighbour))
+                             (remove planet planets))
+                        #'< :key #'car)))
       (make-game :planets planets
                  :fleets (coerce (nreverse fleets) 'vector)))))
 

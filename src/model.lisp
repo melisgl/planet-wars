@@ -13,9 +13,12 @@
   x
   y
   growth
-  ;; a list of fleets targeting this planet in ascending order of
+  ;; a vector of fleets targeting this planet in ascending order of
   ;; N-REMAINING-TURNS
-  incoming)
+  incoming
+  ;; a vector of (TURNS-TO-TRAVEL . PLANET) pairs in ascending order
+  ;; of TURNS-TO-TRAVEL
+  neighbours)
 
 (defstruct (fleet (:include %ships) (:conc-name ""))
   source
@@ -36,6 +39,10 @@
   (if (planet-p obj)
       (id obj)
       obj))
+
+(defun turns-to-travel (planet1 planet2)
+  (ceiling (sqrt (+ (expt (- (x planet1) (x planet2)) 2)
+                    (expt (- (y planet1) (y planet2)) 2)))))
 
 ;;; 0 for neutral, 1 for the player, 2 for the opponent
 (defparameter *max-n-players* 3)
