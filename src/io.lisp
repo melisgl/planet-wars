@@ -49,8 +49,14 @@
                      (push planet planets)))
                   ((char= #\F (aref line 0))
                    (push (parse-fleet line) fleets)))))
-    (make-game :planets (coerce (nreverse planets) 'vector)
-               :fleets (coerce (nreverse fleets) 'vector))))
+    (let ((planets (coerce (nreverse planets) 'vector)))
+      (dolist (fleet fleets)
+        (push fleet (incoming (aref planets (destination fleet)))))
+      (loop for planet across planets do
+            (setf (incoming planet)
+                  (sort (incoming planet) #'< :key #'n-remaining-turns)))
+      (make-game :planets planets
+                 :fleets (coerce (nreverse fleets) 'vector)))))
 
 (defun write-game (game stream)
   (map nil (lambda (planet)

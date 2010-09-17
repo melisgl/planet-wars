@@ -12,7 +12,10 @@
   id
   x
   y
-  growth)
+  growth
+  ;; a list of fleets targeting this planet in ascending order of
+  ;; N-REMAINING-TURNS
+  incoming)
 
 (defstruct (fleet (:include %ships) (:conc-name ""))
   source
