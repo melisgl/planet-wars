@@ -13,11 +13,11 @@
   x
   y
   growth
-  ;; a vector of fleets targeting this planet in ascending order of
-  ;; N-REMAINING-TURNS
+  ;; a list (for ease of insertion) of fleets targeting this planet in
+  ;; ascending order of N-REMAINING-TURNS
   incoming
-  ;; a vector of (TURNS-TO-TRAVEL . PLANET) pairs in ascending order
-  ;; of TURNS-TO-TRAVEL
+  ;; a list of (TURNS-TO-TRAVEL . PLANET) pairs in ascending order of
+  ;; TURNS-TO-TRAVEL
   neighbours)
 
 (defstruct (fleet (:include %ships) (:conc-name ""))
