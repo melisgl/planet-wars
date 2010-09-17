@@ -25,10 +25,6 @@
     (assert (= 12 (n-total-turns fleet)))
     (assert (= 2 (n-remaining-turns fleet)))))
 
-(defun test ()
-  (test-parse-planet)
-  (test-parse-fleet))
-
 (defparameter *test-game*
   "# Some example planets
 P 0 0 1 34 2 # Player one's home planet.
@@ -55,3 +51,8 @@ F 2 28 1 2 8 4
             (write-game game stream))))
     (prin1 string)
     (assert (string= string *test-game/canonical*))))
+
+(defun test ()
+  (test-parse-planet)
+  (test-parse-fleet)
+  (test-read-write-game))
