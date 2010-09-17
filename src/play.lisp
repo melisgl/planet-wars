@@ -1,7 +1,8 @@
 (in-package :planet-wars)
 
 (defun play (&key (player (make-instance 'dummy-player))
-             (input *standard-input*) (output *standard-output*))
+             (input *standard-input*) (output *standard-output*)
+             (exit-on-error-p t))
   (pw-util:logmsg "~&~%* New game started at ~A~%"
                   (pw-util:current-date-time-string))
   (handler-bind ((error
@@ -11,7 +12,8 @@
                      e
                      (with-output-to-string (s)
                        (sb-debug:backtrace most-positive-fixnum s)))
-                    (sb-ext:quit :recklessly-p t))))
+                    (when exit-on-error-p
+                      (sb-ext:quit :recklessly-p t)))))
     (loop while (peek-char nil input nil nil)
           for turn from 1 do
           (pw-util:logmsg "** turn ~A~%" turn)
@@ -45,7 +47,8 @@
                                 (lambda ()
                                   (unwind-protect
                                        (play :player player
-                                             :input stream :output stream)
+                                             :input stream :output stream
+                                             :exit-on-error-p nil)
                                     (socket-close client)))))
                  until one-shot))
       (socket-close socket))))
