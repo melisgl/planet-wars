@@ -2,7 +2,7 @@ PROXYBIN=ProxyBot
 # Don't change this, the server will try to run this binary.
 BIN=MyBot
 DIRNAME=`basename $$PWD`
-STARTER_PACKAGE_ZIP="common-lisp-starter-package-v0.4.zip"
+STARTER_PACKAGE="common-lisp-starter-package-v0.4"
 
 $BIN:   src/*.lisp
 	bin/compile-bot.sh
@@ -19,8 +19,8 @@ distclean: clean
 	rm -f "$(BIN)" "$(PROXYBIN)" "$(STARTER_PACKAGE_ZIP)"
 
 starter-package:
-	git archive --format=zip --prefix "common-lisp-starter-package-v0.4/" HEAD > \
-		"$(STARTER_PACKAGE_ZIP)"
+	git archive --format=zip --prefix "$(STARTER_PACKAGE)/" HEAD > \
+		"$(STARTER_PACKAGE).zip"
 
 submission:
 	./bin/make-submission.sh "$(DIRNAME)"
