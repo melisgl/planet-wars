@@ -10,5 +10,3 @@
 (let ((*standard-output* *error-output*))
   (load (merge-pathnames "setup.lisp" *load-truename*))
   (require :planet-wars))
-
-(planet-wars:play)

@@ -59,9 +59,15 @@ before =(REQUIRE :PLANET-WARS)=.
 ** Submitting the bot
 
 =make submission= creates a zip file that can be used to submit a bot
-to the competition. Once submitted your code is compiled using a
-Makefile not unlike the one that came with this package, so be sure to
-test a compiled version of your bot before submitting.
+to the competition. Once submitted your code is compiled on the server
+with:
+
+  sbcl --disable-ldb --lose-on-corruption --end-runtime-options \
+      --no-sysinit --no-userinit --disable-debugger --load MyBot.lisp \
+      --eval "(save-lisp-and-die \"MyBot\" :executable t :toplevel #'pwbot::main)"
+
+This is what a =make= does in the starter package. Test the =MyBot=
+binary before submitting.
 
 At the time of this writing the memory available in the sandbox for
 bots is not specified, =run-sbcl.sh= defaults to 768M for the heap.

@@ -1,6 +1,9 @@
 (in-package :planet-wars)
 
-;;;; Generic interface
+;;;; Player
+;;;;
+;;;; The functions below are allowed to mutate the player state. Use a
+;;;; fresh instance for each game.
 
 (defgeneric parse-game (player stream))
 

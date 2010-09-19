@@ -6,5 +6,3 @@
 (let ((*standard-output* *error-output*))
   (load (merge-pathnames "setup.lisp" *load-truename*))
   (require :proxy-bot))
-
-(pw-proxy-bot:proxy)

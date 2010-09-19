@@ -1,5 +1,9 @@
 (in-package :planet-wars)
 
+;;; Called by the MyBot binary.
+(defun main ()
+  (play))
+
 (defun play (&key (player (make-instance 'dummy-player))
              (input *standard-input*) (output *standard-output*)
              (exit-on-error-p t))

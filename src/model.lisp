@@ -1,4 +1,4 @@
-(in-package :planet-wars)
+(in-package :pwbot)
 
 ;;;; Speed may matter, use structs.
 
@@ -43,6 +43,7 @@
 (defun turns-to-travel (planet1 planet2)
   (ceiling (sqrt (+ (expt (- (x planet1) (x planet2)) 2)
                     (expt (- (y planet1) (y planet2)) 2)))))
+
 
 ;;; 0 for neutral, 1 for the player, 2 for the opponent
 (defparameter *max-n-players* 3)
