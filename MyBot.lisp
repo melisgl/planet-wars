@@ -8,5 +8,15 @@
 ;;; Load the sytem, but make sure nothing is written to the orignal
 ;;; stdout as that's read by the engine.
 (let ((*standard-output* *error-output*))
-  (load (merge-pathnames "setup.lisp" *load-truename*))
-  (require :planet-wars))
+  (handler-bind ((error
+                  (lambda (c)
+                    (declare (ignore c))
+                    (format *standard-output*
+                            "System info:~% ~S~%"
+                            (list *default-pathname-defaults*
+                                  *features*
+                                  (lisp-implementation-type)
+                                  (lisp-implementation-version)
+                                  (directory "**"))))))
+    (load (merge-pathnames "setup.lisp" *load-truename*))
+    (require :planet-wars)))
