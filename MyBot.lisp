@@ -4,15 +4,16 @@
 
 ;;; Any output to stderr makes the compile daemon on the server think
 ;;; that compilation failed.
-(handler-bind ((error
-                (lambda (c)
-                  (declare (ignore c))
-                  (format *standard-output*
-                          "System info:~% ~S~%"
-                          (list *default-pathname-defaults*
-                                *features*
-                                (lisp-implementation-type)
-                                (lisp-implementation-version)
-                                (directory "**"))))))
-  (load (merge-pathnames "setup.lisp" *load-truename*))
-  (require :planet-wars))
+(let ((*error-output* *standard-output*))
+  (handler-bind ((error
+                  (lambda (c)
+                    (declare (ignore c))
+                    (format *standard-output*
+                            "System info:~% ~S~%"
+                            (list *default-pathname-defaults*
+                                  *features*
+                                  (lisp-implementation-type)
+                                  (lisp-implementation-version)
+                                  (directory "**"))))))
+    (load (merge-pathnames "setup.lisp" *load-truename*))
+    (require :planet-wars)))

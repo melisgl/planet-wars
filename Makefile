@@ -1,6 +1,6 @@
 PROXYBIN=ProxyBot
 DIRNAME=`basename $$PWD`
-STARTER_PACKAGE="common-lisp-starter-package-v0.6"
+STARTER_PACKAGE="common-lisp-starter-package-v0.7"
 
 $BIN:   src/*.lisp
 	sh bin/run-sbcl.sh --load MyBot.lisp \
