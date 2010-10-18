@@ -69,17 +69,13 @@
                   (resolve-battle (owner planet) (id planet) counts))))))
 
 ;;; Return the owner and the number of ships.
-(defun resolve-battle (owner id counts)
-  (let ((first 0)
-        (second 0))
-    (loop for player upfrom 1 below *max-n-players* do
-          (let ((n (aref counts id player)))
-            (when (<= (aref counts id second) n)
-              (cond ((<= (aref counts id first) n)
-                     (setq second first)
-                     (setq first player))
-                    (t
-                     (setq second player))))))
-    (if (> (aref counts id first) (aref counts id second))
-        (values first (- (aref counts id first) (aref counts id second)))
+(defun resolve-battle (owner counts turn)
+  (declare (ignore turn))
+  (let* ((indices
+          (sort (list 0 1 2) #'> :key (lambda (i)
+                                          (aref counts i))))
+         (first (first indices))
+         (second (second indices)))
+    (if (> (aref counts first) (aref counts second))
+        (values first (- (aref counts first) (aref counts second)))
         (values owner 0))))
