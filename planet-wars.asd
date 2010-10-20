@@ -7,7 +7,8 @@
   :licence "MIT"
   :components ((:module "src"
                 :serial t
-                :components ((:file "package")
+                :components ((:file "timer")
+                             (:file "package")
                              (:file "model")
                              (:file "io")
                              (:file "player")
