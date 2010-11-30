@@ -3,4 +3,7 @@
   (:export #:*verbose*
            #:*log-filename*
            #:logmsg
-           #:current-date-time-string))
+           #:current-date-time-string
+           #:with-reckless-exit
+           #:with-errors-logged
+           #:fraction))

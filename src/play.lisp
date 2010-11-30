@@ -2,37 +2,30 @@
 
 ;;; Called by the MyBot binary.
 (defun main ()
-  (play))
+  (pw-util:with-reckless-exit
+    (pw-util:with-errors-logged (:exit-on-error-p t)
+      (play))))
+
 
-(defun play (&key (player (make-instance 'dummy-player))
-             (input *standard-input*) (output *standard-output*)
-             (exit-on-error-p t))
-  (pw-util:logmsg "~&~%* New game started at ~A~%"
+(defgeneric compute-orders (bot input))
+
+(defun play (&key (player (make-instance 'bocsimacko))
+             (input *standard-input*) (output *standard-output*))
+  (pw-util:logmsg "~&~%* game started at ~A~%"
                   (pw-util:current-date-time-string))
-  (handler-bind ((error
-                  (lambda (e)
-                    (pw-util:logmsg
-                     "ERROR: ~A~%~A~%"
-                     e
-                     (with-output-to-string (s)
-                       (sb-debug:backtrace most-positive-fixnum s)))
-                    (when exit-on-error-p
-                      (sb-ext:quit :recklessly-p t)))))
-    (loop while (peek-char nil input nil nil)
-          for turn from 1 do
-          (pw-util:logmsg "** turn ~A~%" turn)
-          (pw-util:logmsg "~A~%"
-                          (with-output-to-string (*trace-output*)
-                            (time
-                             (progn
-                               (parse-game player input)
-                               (let ((orders (compute-orders player)))
-                                 (pw-util:logmsg "*** orders~%~S~%" orders)
-                                 (write-orders orders output))
-                               (write-line "go" output))))))))
+  (loop while (peek-char nil input nil nil)
+        for turn from 1 do
+        (pw-util:logmsg "** turn ~A~%" turn)
+        (let* ((orders (compute-orders player input))
+               (orders-now (remove-if-not #'current-order-p orders))
+               (orders-later (remove-if #'current-order-p orders)))
+          (pw-util:logmsg "*** orders~%~S~%" orders-now)
+          (when orders-later
+            (pw-util:logmsg "*** orders later~%~S~%" orders-later))
+          (write-orders orders-now output))
+        (write-line "go" output)))
 
-(defun start-server-for-proxy-bot (&key (player (make-instance 'dummy-player))
-                                   one-shot)
+(defun start-server-for-proxy-bot (&key (player-class 'dummy-player) one-shot)
   (let ((socket (make-instance 'inet-socket :type :stream :protocol :tcp)))
     (unwind-protect
          (progn
@@ -47,12 +40,15 @@
                                                     :element-type 'character
                                                     :buffering :line)))
                    (pw-util:logmsg "Got connection...~%")
-                   (#+sb-thread sb-thread:make-thread #-sb-thread funcall
-                                (lambda ()
-                                  (unwind-protect
-                                       (play :player player
-                                             :input stream :output stream
-                                             :exit-on-error-p nil)
-                                    (socket-close client)))))
+                   (#+sb-thread
+                    sb-thread:make-thread
+                    #-sb-thread
+                    funcall
+                    (lambda ()
+                      (unwind-protect
+                           (pw-util:with-errors-logged ()
+                             (play :player (make-instance player-class)
+                                   :input stream :output stream))
+                        (ignore-errors (socket-close client))))))
                  until one-shot))
-      (socket-close socket))))
+      (ignore-errors (socket-close socket)))))

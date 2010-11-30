@@ -1,0 +1,24 @@
+#!/bin/sh
+rm -f stop
+while test ! -f stop; do
+    echo "Player binary: $2"
+    date
+    ./tcp/tcp 72.44.46.68 995 "$1" -p honolulu-pass "$2"
+    if [ "$3" != "" ]; then
+        echo "Player binary: $4"
+        date
+        ./tcp/tcp 72.44.46.68 995 "$3" -p honolulu-pass "$4"
+    else
+            sleep $((10+RANDOM%20))
+    fi
+    if [ "$5" != "" ]; then
+        echo "Player binary: $6"
+        date
+        ./tcp/tcp 72.44.46.68 995 "$5" -p honolulu-pass "$6"
+    fi
+    if [ "$7" != "" ]; then
+        echo "Player binary: $7"
+        date
+        ./tcp/tcp 72.44.46.68 995 "$7" -p honolulu-pass "$8"
+    fi
+done

@@ -1,10 +1,12 @@
+GIT_VERSION=`git describe --tags --dirty`
+BIN="bocsimacko-${GIT_VERSION}"
 PROXYBIN=ProxyBot
 DIRNAME=`basename $$PWD`
 STARTER_PACKAGE="common-lisp-starter-package-v0.8"
 
 $BIN:   src/*.lisp
 	sh bin/run-sbcl.sh --load MyBot.lisp \
-		--eval "(save-lisp-and-die \"MyBot\" :executable t :toplevel #'pwbot::main)"
+		--eval "(save-lisp-and-die \"${BIN}\" :executable t :toplevel #'pwbot::main)"
 
 $(PROXYBIN): src/proxy-bot/*.lisp
 	sh bin/run-sbcl.sh --load ProxyBot.lisp \

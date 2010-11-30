@@ -3,7 +3,7 @@
 (asdf:defsystem #:planet-wars
   :name "Planet Wars Bot for the Google AI contest"
   :author "Gabor Melis"
-  :version "0.0.0"
+  :version "0.83"
   :licence "MIT"
   :components ((:module "src"
                 :serial t
@@ -11,8 +11,9 @@
                              (:file "package")
                              (:file "model")
                              (:file "io")
+                             (:file "play")
                              (:file "player")
-                             (:file "play"))))
+                             (:file "alpha-beta"))))
   :depends-on (#:parse-number #:split-sequence #:sb-bsd-sockets
-                              #:planet-wars-util)
+                              #:alexandria #:planet-wars-util)
   :serial t)

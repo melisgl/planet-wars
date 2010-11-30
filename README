@@ -1,21 +1,26 @@
-The files in this package are part of a starter package from the Google AI
-Challenge. The Google AI Challenge is an Artificial Intelligence programming
-contest. You can get more information by visiting www.ai-contest.com.
+# -*- mode: org -*-
+This is a somewhat cleaned up version of bocsimacko-b0.83, my final
+submission to the Google AI Planet Wars Challenge [1].
 
-The entire contents of this starter package are released under the Apache
-license as is all code related to the Google AI Challenge. See
-code.google.com/p/ai-contest/ for more details.
+Gabor Melis [2]
 
-There are a bunch of tutorials on the ai-contest.com website that tell you
-what to do with the contents of this starter package. For the impatient, here
-is a brief summary.
-  * In the root directory, there are a bunch of code files. These are a simple
-    working contest entry that employs a basic strategy. These are meant to be
-    used as a starting point for you to start writing your own entry.
-    Alternatively, you can just package up the starter package as-is and submit
-    it on the website.
-  * The tools directory contains a game engine and visualizer. This is meant
-    to be used to test your bot. See the relevant tutorials on the website for
-    information about how to use the tools.
-  * The example_bots directory contains some sample bots for you to test your
-    own bot against.
+* To get a binary
+
+1. install SBCL
+2. make
+
+* To understand the code 
+
+In src/ read model.lisp, player.lisp and maybe alpha-beta.lisp. The
+rest is plumbing and small third party libs (alexandria,
+parse-number).
+
+* Links
+
+[1] http://ai-contest.com/rankings.php
+
+[2] mega@retes.hu, http://quotenil.com
+
+[3] git: http://quotenil.com/git/planet-wars.git
+
+[4] gitweb: http://quotenil.com/git/?p=planet-wars.git

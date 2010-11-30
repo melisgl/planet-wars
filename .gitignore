@@ -3,3 +3,11 @@
 *.log
 MyBot
 ProxyBot
+binary/
+version
+stop
+unused/
+planet_wars-cpp/
+tcp/
+bocsimacko-b*
+BayesElo/
