@@ -127,7 +127,7 @@
                 :trace #'trace-alpha-beta
                 :new-best (lambda (depth score actions)
                             (when (= 0 depth)
-                              (sb-sys:without-interrupts
+                              (without-interrupts
                                 ;; Before one depth 0 move is scored
                                 ;; we want to return the best move
                                 ;; found by the move generator.

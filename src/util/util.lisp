@@ -23,13 +23,32 @@ a 'tail -f sbcl.log' running. Set to NIL when submitting!")
     (format nil "~D-~2,'0D-~2,'0D ~2,'0D:~2,'0D:~2,'0D"
             yea mon day hou min sec)))
 
+(defun exit (&key recklessly-p (status 0))
+  #+sbcl
+  (sb-ext:quit :recklessly-p recklessly-p :unix-status 0)
+  #+allegro
+  (excl:exit status :no-unwind recklessly-p))
+
+(defun backtrace-to-stream (stream)
+  #+sbcl
+  (sb-debug:backtrace most-positive-fixnum stream)
+  #+allegro
+  (top-level.debug:zoom stream))
+
+(defmacro without-interrupts (&body body)
+  `(#+allegro #.(if (find-symbol (string '#:with-delayed-interrupts) '#:excl)
+                    'excl:with-delayed-interrupts
+                    'excl:without-interrupts)
+    #+sbcl sb-sys:without-interrupts
+    ,@body))
+
 (defmacro with-reckless-exit (&body body)
   `(unwind-protect
         (progn ,@body)
      ;; On a normal exit or a simple (QUIT) standard output streams are
      ;; flushed. Flushing the streams may error in a pipe. The default
      ;; signal handlers call (QUIT) that throws.
-     (sb-ext:quit :recklessly-p t)))
+     (exit :recklessly-p t)))
 
 (defmacro with-errors-logged ((&key exit-on-error-p) &body body)
   `(handler-bind ((error
@@ -39,15 +58,15 @@ a 'tail -f sbcl.log' running. Set to NIL when submitting!")
                                "ERROR: ~A~%~A~%"
                                e
                                (with-output-to-string (s)
-                                 (sb-debug:backtrace most-positive-fixnum s)))
+                                 (backtrace-to-stream s)))
                        (let ((*verbose* t))
                          (pw-util:logmsg
                           "ERROR: ~A~%~A~%"
                           e
                           (with-output-to-string (s)
-                            (sb-debug:backtrace most-positive-fixnum s)))))
+                            (backtrace-to-stream s)))))
                      (when ,exit-on-error-p
-                       (sb-ext:quit :recklessly-p t)))))
+                       (exit :recklessly-p t)))))
      ,@body))
 
 (defun fraction (x)

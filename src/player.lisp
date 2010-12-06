@@ -16,6 +16,17 @@
                  (< (cdr *best-move-so-far*) score)))
     (setq *best-move-so-far* (cons move score))))
 
+#+allegro
+(defmacro with-best-move-on-timeout (timeout &body body)
+  `(let ((*best-move-so-far* nil))
+     (mp:with-timeout (,timeout (progn
+                                  (logmsg "*** timed out~%")
+                                  (if (null *best-move-so-far*)
+                                      ()
+                                      (car *best-move-so-far*))))
+       ,@body)))
+
+#+sbcl
 (defmacro with-best-move-on-timeout (timeout &body body)
   `(let ((*best-move-so-far* nil))
      (handler-case
@@ -242,7 +253,7 @@
     surplus))
 
 (defun uncumulate-surplus (surplus)
-  (let ((x (make-array (length surplus) :element-type 'ship-count)))
+  (let ((x (make-count-vector (length surplus))))
     (replace x surplus)
     (uncumulate-surplus! x)))
 
@@ -831,7 +842,7 @@
 ;;; indexed by planets id, representing the available ships.
 (defun find-step (player cumulative-surpluses planet planets step-target
                   min-turn max-turn)
-  (let ((used-surpluses (make-array (length planets)))
+  (let ((used-surpluses (make-count-vector (length planets)))
         (step ()))
     (loop for turn upfrom min-turn upto max-turn do
           (let ((need (aref step-target turn))
@@ -1112,9 +1123,9 @@
           (*n-turns-till-horizon* *n-turns-left-in-game*)
           ;; Must read the whole thing until `go'. We can only
           ;; hope that we don't time out.
-          (,game (sb-sys:without-interrupts
+          (,game (without-interrupts
                    ;; don't want the warnings
-                   (let ((sb-unix::*on-dangerous-select* nil))
+                   (let (#+sbcl (sb-unix::*on-dangerous-select* nil))
                      (read-game ,input))))
           (*depth* 0)
           (*turn* 0)

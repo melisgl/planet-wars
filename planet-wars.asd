@@ -7,13 +7,13 @@
   :licence "MIT"
   :components ((:module "src"
                 :serial t
-                :components ((:file "timer")
+                :components (#+sbcl (:file "timer")
                              (:file "package")
                              (:file "model")
                              (:file "io")
                              (:file "play")
                              (:file "player")
                              (:file "alpha-beta"))))
-  :depends-on (#:parse-number #:split-sequence #:sb-bsd-sockets
+  :depends-on (#:parse-number #:split-sequence #:usocket
                               #:alexandria #:planet-wars-util)
   :serial t)

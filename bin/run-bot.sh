@@ -4,4 +4,4 @@
 # player argument. It loads the planet-wars system and calls PW:PLAY.
 BASE=`dirname "$0"`
 
-"$BASE"/run-sbcl.sh --load "$BASE/../RunMyBot.lisp"
+"$BASE"/run-lisp.sh --load "$BASE/../RunMyBot.lisp"

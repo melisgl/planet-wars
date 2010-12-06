@@ -1,13 +1,15 @@
 *~
 *.fasl
 *.log
+config
 MyBot
 ProxyBot
+*.dxl
 binary/
 version
 stop
 unused/
 planet_wars-cpp/
 tcp/
-bocsimacko-b*
+bocsimacko-*
 BayesElo/

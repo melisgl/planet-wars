@@ -1,0 +1,49 @@
+#!/bin/sh
+
+lisp=
+binary=
+
+usage()
+{
+    echo "Usage: $0 [--lisp [ acl | sbcl]] [--path-to-lisp <lisp-binary>]"
+}
+
+while [ "$1" != "" ]; do
+    case $1 in
+        --lisp)
+            shift
+            lisp=$1
+            ;;
+        --path-to-lisp)
+            shift
+            lispbin=$1
+            ;;
+        -h | --help)
+            usage
+            exit
+            ;;
+        *)
+            usage
+            exit 1
+    esac
+    shift
+done
+
+if [ "$lisp" != "acl" -a "$lisp" != "sbcl" ]; then
+    echo "Unsupported lisp: '$lisp'"
+    usage
+    exit 1
+fi
+
+if [ "$lispbin" == "" ]; then
+    if [ "$lisp" == "acl" ]; then
+        lispbin=alisp
+    elif [ "$lisp" == "sbcl" ]; then
+        lispbin=sbcl
+    fi
+fi
+
+echo "LISP=\"$lisp\"" > config
+echo "LISPBIN=\"$lispbin\"" >> config
+
+cat config

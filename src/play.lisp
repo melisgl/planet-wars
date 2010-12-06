@@ -23,32 +23,28 @@
           (when orders-later
             (pw-util:logmsg "*** orders later~%~S~%" orders-later))
           (write-orders orders-now output))
-        (write-line "go" output)))
+        (write-line "go" output)
+        (force-output output)))
 
 (defun start-server-for-proxy-bot (&key (player-class 'dummy-player) one-shot)
-  (let ((socket (make-instance 'inet-socket :type :stream :protocol :tcp)))
+  (let ((socket (usocket:socket-listen #+allegro "localhost"
+                                       #+sbcl #(127 0 0 1)
+                                       41807 :reuse-address t)))
     (unwind-protect
-         (progn
-           (setf (sockopt-reuse-address socket) t)
-           (socket-bind socket #(127 0 0 1) 41807)
-           (socket-listen socket 0)
-           (loop do
-                 (pw-util:logmsg "Waiting for connection...~%")
-                 (let* ((client (socket-accept socket))
-                        (stream (socket-make-stream client :input t
-                                                    :output t
-                                                    :element-type 'character
-                                                    :buffering :line)))
-                   (pw-util:logmsg "Got connection...~%")
-                   (#+sb-thread
-                    sb-thread:make-thread
-                    #-sb-thread
-                    funcall
-                    (lambda ()
-                      (unwind-protect
-                           (pw-util:with-errors-logged ()
-                             (play :player (make-instance player-class)
-                                   :input stream :output stream))
-                        (ignore-errors (socket-close client))))))
-                 until one-shot))
-      (ignore-errors (socket-close socket)))))
+         (loop do
+               (pw-util:logmsg "Waiting for connection...~%")
+               (let* ((client (usocket:socket-accept socket))
+                      (stream (usocket:socket-stream client)))
+                 (pw-util:logmsg "Got connection...~%")
+                 (#+sb-thread
+                  sb-thread:make-thread
+                  #-sb-thread
+                  funcall
+                  (lambda ()
+                    (unwind-protect
+                         (pw-util:with-errors-logged ()
+                           (play :player (make-instance player-class)
+                                 :input stream :output stream))
+                      (ignore-errors (usocket:socket-close client))))))
+               until one-shot)
+      (ignore-errors (usocket:socket-close socket)))))

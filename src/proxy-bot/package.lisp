@@ -1,3 +1,3 @@
 (defpackage :pw-proxy-bot
-  (:use :cl :sb-bsd-sockets)
+  (:use :cl)
   (:export #:proxy))

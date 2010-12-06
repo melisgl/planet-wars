@@ -6,8 +6,9 @@ Gabor Melis [2]
 
 * To get a binary
 
-1. install SBCL
-2. make
+1. install ACL or SBCL
+2. do './configure --lisp acl' or './configure --lisp sbcl'
+3. make
 
 * To understand the code 
 

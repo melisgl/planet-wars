@@ -5,18 +5,21 @@ DIRNAME=`basename $$PWD`
 STARTER_PACKAGE="common-lisp-starter-package-v0.8"
 
 $BIN:   src/*.lisp
-	sh bin/run-sbcl.sh --load MyBot.lisp \
-		--eval "(save-lisp-and-die \"${BIN}\" :executable t :toplevel #'pwbot::main)"
+	sh bin/run-lisp.sh --load MyBot.lisp --eval "(cl-user::dump \"${BIN}\")"
+	chmod +x "${BIN}"
 
 $(PROXYBIN): src/proxy-bot/*.lisp
-	sh bin/run-sbcl.sh --load ProxyBot.lisp \
-	        --eval "(save-lisp-and-die \"$(PROXYBIN)\" :executable t :toplevel #'pw-proxy-bot:proxy)"
+	sh bin/run-lisp.sh --load ProxyBot.lisp --eval "(cl-user::dump \"${PROXYBIN}\")"
+	chmod +x "${PROXYBIN}"
 
 clean:
 	rm -f src/*.fasl src/*~
 
 distclean: clean
-	rm -f "$(BIN)" "$(PROXYBIN)" "$(STARTER_PACKAGE_ZIP)"
+	rm -f "$(BIN)" "$(PROXYBIN)" "$(STARTER_PACKAGE_ZIP)" *.dxl
+
+archclean: distclean
+	rm -rf config
 
 starter-package:
 	git archive --format=zip --prefix "$(STARTER_PACKAGE)/" HEAD > \

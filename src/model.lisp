@@ -33,11 +33,11 @@
 
 (declaim (inline make-count-vector))
 (defun make-count-vector (n)
-  (make-array n :element-type 'ship-count))
+  (make-array n :element-type 'ship-count :initial-element 0))
 
 (declaim (inline make-player-vector))
 (defun make-player-vector (n)
-  (make-array n :element-type 'player))
+  (make-array n :element-type 'player :initial-element 0))
 
 ;;; Planets are mostly inmmutable except for WITH-ORDER.
 (defclass planet ()
@@ -267,7 +267,7 @@
       ;; Without WITHOUT-INTERRUPTS a timeout could unwind before
       ;; EXECUTE-ORDER is complete and signal an error cancelling the
       ;; timeout.
-      `(sb-sys:without-interrupts
+      `(#+sbcl sb-sys:without-interrupts #-sbcl progn
          (unwind-protect
               (progn
                 (execute-orders ,orders)
@@ -283,7 +283,7 @@
                                       (if (boundp '*moves*)
                                           *moves*
                                           nil))))
-                  (sb-sys:with-local-interrupts
+                  (#+sbcl sb-sys:with-local-interrupts #-sbcl progn
                     ,@body)))
            (undo-orders ,orders))))))
 
