@@ -25,7 +25,8 @@
   #+allegro
   (let ((image (format nil "~A.dxl" name)))
     (excl:dumplisp :name image :suppress-allegro-cl-banner t)
-    (with-open-file (stream name :direction :output :if-exists :supersede)
+    (with-open-file (stream (string name) :direction :output
+                     :if-exists :supersede)
       (format stream "#!/bin/sh
 ~A -I \"~A\" -e '(pw-proxy-bot:proxy)'~%" (path-to-lisp) image))
     (excl:exit))

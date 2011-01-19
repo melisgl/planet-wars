@@ -4,12 +4,15 @@ PROXYBIN=ProxyBot
 DIRNAME=`basename $$PWD`
 STARTER_PACKAGE="common-lisp-starter-package-v0.8"
 
+# KLUDGE: filenames are passed as symbols to work around quoting
+# issues on ACL running on cygwin.
+
 $BIN:   src/*.lisp
-	sh bin/run-lisp.sh --load MyBot.lisp --eval "(cl-user::dump \"${BIN}\")"
+	sh bin/run-lisp.sh --load MyBot.lisp --eval "(cl-user::dump '|${BIN}|)"
 	chmod +x "${BIN}"
 
 $(PROXYBIN): src/proxy-bot/*.lisp
-	sh bin/run-lisp.sh --load ProxyBot.lisp --eval "(cl-user::dump \"${PROXYBIN}\")"
+	sh bin/run-lisp.sh --load ProxyBot.lisp --eval "(cl-user::dump '|${PROXYBIN}|)"
 	chmod +x "${PROXYBIN}"
 
 clean:
