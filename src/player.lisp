@@ -1176,10 +1176,10 @@
 (setq *verbose* t)
 (setq *verbose* nil)
 
-(sb-thread:make-thread
- (lambda ()
-   (start-server-for-proxy-bot :player-class 'bocsimacko))
- :name "Proxy server")
+(mp:process-run-function "Proxy server" #'start-server-for-proxy-bot)
+
+
+(sb-thread:make-thread #'start-server-for-proxy-bot :name "Proxy server")
 
 (require :sb-sprof)
 

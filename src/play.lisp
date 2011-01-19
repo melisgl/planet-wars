@@ -26,7 +26,7 @@
         (write-line "go" output)
         (force-output output)))
 
-(defun start-server-for-proxy-bot (&key (player-class 'dummy-player) one-shot)
+(defun start-server-for-proxy-bot (&key (player-class 'bocsimacko) one-shot)
   (let ((socket (usocket:socket-listen #+allegro "localhost"
                                        #+sbcl #(127 0 0 1)
                                        41807 :reuse-address t)))
