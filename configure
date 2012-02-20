@@ -35,10 +35,10 @@ if [ "$lisp" != "acl" -a "$lisp" != "sbcl" ]; then
     exit 1
 fi
 
-if [ "$lispbin" == "" ]; then
-    if [ "$lisp" == "acl" ]; then
+if [ "$lispbin" = "" ]; then
+    if [ "$lisp" = "acl" ]; then
         lispbin=alisp
-    elif [ "$lisp" == "sbcl" ]; then
+    elif [ "$lisp" = "sbcl" ]; then
         lispbin=sbcl
     fi
 fi

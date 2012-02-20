@@ -4,7 +4,7 @@ BASE=`dirname "$0"`
 
 . "$BASE/../config"
 
-if [ "$LISP" == "sbcl" ]; then
+if [ "$LISP" = "sbcl" ]; then
     "$BASE/run-sbcl.sh" "$@"
 else
     while [ "$1" != "" ]; do
