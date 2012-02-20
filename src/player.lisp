@@ -1125,7 +1125,15 @@
           ;; hope that we don't time out.
           (,game (without-interrupts
                    ;; don't want the warnings
-                   (let (#+sbcl (sb-unix::*on-dangerous-select* nil))
+                   (let (#+sbcl
+                         #.(if (find-symbol (string '#:*on-dangerous-select*)
+                                            '#:sb-unix)
+                               `(,(intern (string '#:*on-dangerous-select*)
+                                          '#:sb-unix)
+                                 nil)
+                               `(,(intern (string '#:*on-dangerous-wait*)
+                                          '#:sb-unix)
+                                 nil)))
                      (read-game ,input))))
           (*depth* 0)
           (*turn* 0)
