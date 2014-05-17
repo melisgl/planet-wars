@@ -10,6 +10,35 @@ Gabor Melis [2]
 2. do './configure --lisp acl' or './configure --lisp sbcl'
 3. make
 
+* Get an engine/viewer
+You can run and view games with any two (even the official one), but
+the best is this:
+
+https://github.com/albertz/planet_wars-cpp
+
+Clone it just next to this README so that scripts find its binaries.
+
+It needs to be patched to compile with recent gcc:
+
+diff --git a/BotCppStarterpack.cpp b/BotCppStarterpack.cpp
+index 3a1e139..9b68edb 100644
+--- a/BotCppStarterpack.cpp
++++ b/BotCppStarterpack.cpp
+@@ -1,4 +1,5 @@
+ #include <iostream>
++#include <unistd.h>
+ #include "game.h"
+ 
+ #ifdef GAMEDEBUG
+
+* Play games
+
+./bin/on-all-maps.sh <binary1> <binary2>
+
+This will create two log files in games/<date> for each map. You can
+view the games played:
+
+./planet_wars-cpp/showgame < games/2014-05-17-08-06-48/map_finals-1_01.txt-1-vs-2.log
 * To understand the code 
 
 In src/ read model.lisp, player.lisp and maybe alpha-beta.lisp. The
