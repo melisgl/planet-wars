@@ -47,10 +47,8 @@ parse-number).
 
 * Links
 
-[1] http://ai-contest.com/rankings.php
+[1] http://planetwars.aichallenge.org/rankings.php
 
 [2] mega@retes.hu, http://quotenil.com
 
-[3] git: http://quotenil.com/git/planet-wars.git
-
-[4] gitweb: http://quotenil.com/git/?p=planet-wars.git
+[3] git: https://github.com/melisgl/planet-wars
